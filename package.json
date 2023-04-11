@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy2": "npm run build && git add dist && git commit -m 'Deploy to Github Pages' && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "pinia": "^2.0.32",
