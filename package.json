@@ -2,7 +2,7 @@
   "name": "sefinalprj",
   "version": "0.0.0",
   "private": true,
-  "homepage": "https://lesterbatayan.github.io",
+  "homepage": "https://lesterbatayan.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
