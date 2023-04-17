@@ -1,5 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
+
+var mapImageSrc = ref()
+var isLoading = ref(false)
+
 const vehicles = ref([
   { name: 'Jeepney', code: 'V1' },
   { name: 'Taxi', code: 'V2' },
@@ -8,13 +12,11 @@ const vehicles = ref([
   { name: 'Tanke', code: 'V5' }
 ])
 const locations = ref([
-  { name: 'Bokawkan Loading Area', code: 'L1' },
-  { name: 'Magsaysay Loading Area', code: 'L2' },
-  { name: 'Camdas', code: 'L3' },
-  { name: 'Km5/Public Market', code: 'L4' },
-  { name: 'Town/Capitol', code: 'L5' },
-  { name: 'CCDC', code: 'L6' },
-  { name: 'Wangal Turning Point', code: 'L7' }
+  { name: 'Baguio City Hall', code: 1 },
+  { name: 'La Trinidad Public Market', code: 2 },
+  { name: 'Benguet Provincial Capitol', code: 3 },
+  { name: 'CCDC', code: 4 },
+  { name: 'Wangal Motorpool', code: 5 }
 ])
 const drivers = ref([
   { name: 'Driver 1', code: 'D1' },
@@ -22,13 +24,62 @@ const drivers = ref([
   { name: 'Driver 3', code: 'D3' },
   { name: 'Driver 4', code: 'D4' }
 ])
+
+const maps = [
+  { locationID: 1, destinationID: 2, src: './src/maps/1 - 2.png' },
+  { locationID: 1, destinationID: 3, src: './src/maps/1 - 3.png' },
+  { locationID: 1, destinationID: 4, src: './src/maps/1 - 4.png' },
+  { locationID: 1, destinationID: 5, src: './src/maps/1 - 5.png' },
+  { locationID: 2, destinationID: 3, src: './src/maps/2 - 3.png' },
+  { locationID: 2, destinationID: 4, src: './src/maps/2 - 4.png' },
+  { locationID: 2, destinationID: 5, src: './src/maps/2 - 5.png' },
+  { locationID: 3, destinationID: 4, src: './src/maps/3 - 4.png' },
+  { locationID: 3, destinationID: 5, src: './src/maps/3 - 5.png' },
+  { locationID: 4, destinationID: 5, src: './src/maps/4 - 5.png' }
+
+]
+
+function getMap(locationID, destinationID) {
+  console.log('locationID', locationID);
+  console.log('destinationID', destinationID);
+
+  const map = maps.find(
+    (m) => m.locationID === locationID && m.destinationID === destinationID
+  )
+  console.log(map);
+  console.log('map', map ? map.src : null);
+  return map ? map.src : null
+}
+
+function fetchMap() {
+  if (selectedLocation.value && selectedDestination.value) {
+    let locationID = selectedLocation.value.code
+    let destinationID = selectedDestination.value.code
+
+    if (locationID > destinationID) {
+      [locationID, destinationID] = [destinationID, locationID]
+    }
+
+    isLoading.value = true 
+
+    setTimeout(() => {
+      mapImageSrc.value = getMap(locationID, destinationID)
+      isLoading.value = false 
+    }, 2000) 
+  } else {
+    mapImageSrc.value = null
+  }
+}
+
 var selectedVehicle = ref()
-var selectedLocation = ref()
-var selectedDestination = ref()
+var selectedLocation = ref(null)
+var selectedDestination = ref(null)
 var selectedDriver = ref()
 var vehicle = ref()
 var location = ref()
 var destination = ref()
+// var locationID = ref()
+// var destinationID = ref()
 var driver = ref()
 var booked = ref()
 
@@ -50,100 +101,171 @@ function bookRide() {
   selectedVehicle.value = ''
   if (location.value && destination.value && vehicle.value && driver.value) {
     localStorage.setItem('booked', true)
-    booked = localStorage.getItem('booked')
+    booked.value = localStorage.getItem('booked')
   }
 }
 
-// function getLocalStorageValues() {
-//   const values = {}
-//   localStorage.forEach((value, key) => {
-//     const obj = {
-//       key: key,
-//       value: value
-//     }
-//     Object.assign(obj, values)
-//   })
 
-//   return values
-// }
+const filteredLocationsForDestination = computed(() => {
+  if (!selectedLocation.value) {
+    return locations.value;
+  }
+  return locations.value.filter(
+    (location) => location.code !== selectedLocation.value.code
+  );
+});
+
+const filteredLocationsForOrigin = computed(() => {
+  if (!selectedDestination.value) {
+    return locations.value;
+  }
+  return locations.value.filter(
+    (location) => location.code !== selectedDestination.value.code
+  );
+});
+
+watch([selectedLocation, selectedDestination], () => {
+  console.log('selectedLocation.value, selectedDestination.value', selectedLocation.value, selectedDestination.value);
+  fetchMap()
+})
 </script>
 
 <template>
-  <!-- <div class="col-12 md:col-6"> -->
-  <!-- <div class=""> -->
-  <!-- <div class="card p-fluid "> -->
-  <div class="card col-12 md:col-6">
-    <h5 class="p-3">Book a Ride</h5>
+  <div class="container">
+    <div class="card">
+      <h5 class="p-3">Book a Ride</h5>
 
-    <div class="p-float-label mt-5">
-      <Dropdown
-        v-model="selectedLocation"
-        inputId="dd-location"
-        :options="locations"
-        optionLabel="name"
-        placeholder="My Location"
-        class="w-auto md:w-14rem"
-      />
-      <label for="dd-location">My Location</label>
-    </div>
+      <div class="flex">
+        <div class="dropdowns">
+          <div class="p-float-label mt-5">
+            <Dropdown v-model="selectedLocation" inputId="dd-location" :options="filteredLocationsForOrigin"
+              optionLabel="name" placeholder="My Location" class="w-auto md:w-14rem" />
+            <label for="dd-location">My Location</label>
+          </div>
 
-    <div class="p-float-label mt-5">
-      <Dropdown
-        v-model="selectedDestination"
-        inputId="dd-destination"
-        :options="locations"
-        optionLabel="name"
-        placeholder=""
-        class="w-auto md:w-14rem"
-      />
-      <label for="dd-destination">My Destination</label>
-    </div>
-    <div class="p-float-label mt-5">
-      <Dropdown
-        v-model="selectedVehicle"
-        inputId="dd-city"
-        :options="vehicles"
-        optionLabel="name"
-        placeholder=""
-        class="w-full md:w-14rem"
-      />
-      <label for="dd-city">Type of Vehicle</label>
-    </div>
-    <div class="p-float-label mt-5">
-      <Dropdown
-        v-model="selectedDriver"
-        inputId="dd-city"
-        :options="drivers"
-        optionLabel="name"
-        placeholder=""
-        class="w-full md:w-14rem"
-      />
-      <label for="dd-city">Select Driver</label>
-    </div>
+          <div class="p-float-label mt-5">
+            <Dropdown v-model="selectedDestination" inputId="dd-destination" :options="filteredLocationsForDestination"
+              optionLabel="name" placeholder="My Destination" class="w-auto md:w-14rem" />
+            <label for="dd-destination">My Destination</label>
+          </div>
 
-    <div class="col-3">
-      <!-- <label for="age1">Age</label> -->
-      <Button type="submit" label="Book Ride" @click="bookRide()" />
-    </div>
-    <div v-if="booked">
-      <p class="text-primary font-bold">You are now booked!</p>
-      <p>Booking Details:</p>
-      <p>
-        Your current location: <span class="font-bold text-primary">{{ location }}</span>
-      </p>
-      <p>
-        Your chosen destination:
-        <span class="font-bold text-primary">{{ destination }}</span>
-      </p>
-      <p>
-        Your chosen vehicle: <span class="font-bold text-primary">{{ vehicle }}</span>
-      </p>
-      <p>
-        Your current driver: <span class="font-bold text-primary">{{ driver }}</span>
-      </p>
+          <div class="p-float-label mt-5">
+            <Dropdown v-model="selectedVehicle" inputId="dd-city" :options="vehicles" optionLabel="name" placeholder=""
+              class="w-full md:w-14rem" />
+            <label for="dd-city">Type of Vehicle</label>
+          </div>
+
+          <div class="p-float-label mt-5">
+            <Dropdown v-model="selectedDriver" inputId="dd-city" :options="drivers" optionLabel="name" placeholder=""
+              class="w-full md:w-14rem" />
+            <label for="dd-city">Select Driver</label>
+          </div>
+
+          <div class="col-3">
+            <Button type="submit" label="Book Ride" @click.prevent="bookRide()" />
+          </div>
+        </div>
+
+        <div class="map-container">
+          <div v-if="isLoading" class="loader"></div>
+          <div class="scrollable-container">
+            <img v-if="mapImageSrc" :src="mapImageSrc" alt="Map" />
+          </div>
+        </div>
+      </div>
+
+      <div v-if="booked" class="booking-details">
+        <p class="text-primary font-bold">You are now booked!</p>
+        <p>Booking Details:</p>
+        <p>
+          Your current location: <span class="font-bold text-primary">{{ location }}</span>
+        </p>
+        <p>
+          Your chosen destination:
+          <span class="font-bold text-primary">{{ destination }}</span>
+        </p>
+        <p>
+          Your chosen vehicle: <span class="font-bold text-primary">{{ vehicle }}</span>
+        </p>
+        <p>
+          Your current driver: <span class="font-bold text-primary">{{ driver }}</span>
+        </p>
+      </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card {
+  width: 100%;
+  max-width: 1200px; 
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.flex {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.dropdowns {
+  width: 300px;
+  margin-right: 1rem;
+}
+
+.map-container {
+  flex: 1;
+  margin-left: 1rem;
+  position: relative;
+  min-width: 60%;
+}
+
+.scrollable-container {
+  height: 80vh;
+  overflow: auto;
+
+  img {
+    width: auto;
+    height: auto;
+    // max-width: 100%;
+  }
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.booking-details {
+  margin-top: 1rem;
+}
+</style>
