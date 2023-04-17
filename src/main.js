@@ -7,6 +7,8 @@ import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
 import InputSwitch from 'primevue/inputswitch'
 import Dropdown from 'primevue/dropdown'
+import Dialog from 'primevue/dialog'
+
 
 import App from './App.vue'
 import router from './router'
@@ -23,6 +25,7 @@ app.component('Checkbox', Checkbox)
 app.component('InputText', InputText)
 app.component('InputSwitch', InputSwitch)
 app.component('Dropdown', Dropdown)
+app.component('Dialog', Dialog)
 
 app.use(createPinia())
 app.use(router)
