@@ -12,11 +12,11 @@ const vehicles = ref([
   { name: 'Tanke', code: 'V5' }
 ])
 const locations = ref([
-  { name: 'Baguio City Hall', code: 1 },
-  { name: 'La Trinidad Public Market', code: 2 },
-  { name: 'Benguet Provincial Capitol', code: 3 },
-  { name: 'CCDC', code: 4 },
-  { name: 'Wangal Motorpool', code: 5 }
+  { name: 'Baguio City Hall', code: 1, coordinates: { lat: 16.413903523297634, lng: 120.59144847086073 } }, 
+  { name: 'La Trinidad Public Market', code: 2, coordinates: { lat: 16.448581635107296, lng: 120.59032091712741 } }, 
+  { name: 'Benguet Provincial Capitol', code: 3, coordinates: { lat: 16.46270696961768, lng: 120.58771972989715 } }, //16.46270696961768, 120.58771972989715
+  { name: 'CCDC', code: 4, coordinates: { lat: 16.45711659759807, lng: 120.57737893087616 } }, //16.45711659759807, 120.57737893087616
+  { name: 'Wangal Motorpool', code: 5, coordinates: { lat: 16.453132480327117, lng: 120.57337307334636 } } //16.453132480327117, 120.57337307334636
 ])
 const drivers = ref([
   { name: 'Driver 1', code: 'D1' },
@@ -60,12 +60,12 @@ function fetchMap() {
       [locationID, destinationID] = [destinationID, locationID]
     }
 
-    isLoading.value = true 
+    isLoading.value = true
 
     setTimeout(() => {
       mapImageSrc.value = getMap(locationID, destinationID)
-      isLoading.value = false 
-    }, 2000) 
+      isLoading.value = false
+    }, 2000)
   } else {
     mapImageSrc.value = null
   }
@@ -95,8 +95,8 @@ function bookRide() {
   localStorage.setItem('vehicle', selectedVehicle.value.name)
   localStorage.setItem('driver', selectedDriver.value.name)
 
-  selectedLocation.value = ''
-  selectedDestination.value = ''
+  // selectedLocation.value = ''
+  // selectedDestination.value = ''
   selectedDriver.value = ''
   selectedVehicle.value = ''
   if (location.value && destination.value && vehicle.value && driver.value) {
@@ -168,8 +168,13 @@ watch([selectedLocation, selectedDestination], () => {
 
         <div class="map-container">
           <div v-if="isLoading" class="loader"></div>
-          <div class="scrollable-container">
+          <!-- <div class="scrollable-container">
             <img v-if="mapImageSrc" :src="mapImageSrc" alt="Map" />
+          </div> -->
+          <div v-if="selectedLocation && selectedDestination" class="map-iframe">
+            <iframe width="100%" height="100%" frameborder="0" style="border:0"
+              :src="'https://www.google.com/maps/embed/v1/directions?key=AIzaSyAigJr6nb3Q3T8E_UnySIEBRTvVoOlsJCg&origin=' + selectedLocation.coordinates.lat + ',' + selectedLocation.coordinates.lng + '&destination=' + selectedDestination.coordinates.lat + ',' + selectedDestination.coordinates.lng"
+              allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -205,7 +210,7 @@ watch([selectedLocation, selectedDestination], () => {
 
 .card {
   width: 100%;
-  max-width: 1200px; 
+  max-width: 1200px;
   background-color: #fff;
   padding: 1rem;
   border-radius: 5px;
@@ -264,6 +269,11 @@ watch([selectedLocation, selectedDestination], () => {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+.map-iframe {
+    width: 100%;
+    height: 80vh;
+  }
 
 .booking-details {
   margin-top: 1rem;
