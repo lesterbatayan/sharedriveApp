@@ -1,63 +1,73 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-import AppMenuItem from './AppMenuItem.vue'
+import AppMenuItem from "./AppMenuItem.vue";
 
 const drivermenu = [
   {
     items: [
-      { label: 'Home', icon: 'pi pi-home', to: '/' },
+      { label: "Home", icon: "pi pi-home", to: "/" },
       {
-        label: 'Set Availability',
-        icon: 'pi pi-user-plus',
-        to: '/availability'
+        label: "Set Availability",
+        icon: "pi pi-user-plus",
+        to: "/availability",
       },
       {
-        label: 'Chat',
-        icon: 'pi pi-comments',
-        to: '/chat'
+        label: "Driver Profile",
+        icon: "pi pi-id-card",
+        to: "/profile",
       },
       {
-        label: 'Logout',
-        icon: 'pi pi-sign-in',
-        to: '/login'
-      }
-    ]
-  }
-]
+        label: "Chat",
+        icon: "pi pi-comments",
+        to: "/chat",
+      },
+      {
+        label: "Logout",
+        icon: "pi pi-sign-in",
+        to: "/login",
+      },
+    ],
+  },
+];
 
 const commutermenu = [
   {
     items: [
-      { label: 'Home', icon: 'pi pi-home', to: '/' },
+      { label: "Home", icon: "pi pi-home", to: "/" },
       {
-        label: 'Book Ride',
-        icon: 'pi pi-car',
-        to: '/bookride'
+        label: "Book Ride",
+        icon: "pi pi-car",
+        to: "/bookride",
       },
       {
-        label: 'Chat',
-        icon: 'pi pi-comments',
-        to: '/chat'
+        label: "List of Available Drivers",
+        icon: "pi pi-eye",
+        to: "/available",
       },
       {
-        label: 'Logout',
-        icon: 'pi pi-sign-in',
-        to: '/login'
-      }
-    ]
-  }
-]
+        label: "Chat",
+        icon: "pi pi-comments",
+        to: "/chat",
+      },
+      {
+        label: "Logout",
+        icon: "pi pi-sign-in",
+        to: "/login",
+      },
+    ],
+  },
+];
 
-var model = ref([])
+var model = ref([]);
 
 onMounted(() => {
-  if (localStorage.getItem('user') == 'driver') {
-    model.value = drivermenu
+  if (localStorage.getItem("user") == "driver") {
+    model.value = drivermenu;
   } else {
-    model.value = commutermenu
+    model.value = commutermenu;
   }
-})
+});
 
 // const model = ref([
 //   {

@@ -8,7 +8,9 @@ import InputText from 'primevue/inputtext'
 import InputSwitch from 'primevue/inputswitch'
 import Dropdown from 'primevue/dropdown'
 import Dialog from 'primevue/dialog'
+import Textarea from 'primevue/textarea'
 
+import 'primeflex/primeflex.css'
 
 import App from './App.vue'
 import router from './router'
@@ -26,6 +28,7 @@ app.component('InputText', InputText)
 app.component('InputSwitch', InputSwitch)
 app.component('Dropdown', Dropdown)
 app.component('Dialog', Dialog)
+app.component('Textarea', Textarea)
 
 app.use(createPinia())
 app.use(router)

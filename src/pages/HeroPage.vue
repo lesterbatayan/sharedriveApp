@@ -1,17 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
-var username = ref('')
+const router = useRouter();
+var username = ref("");
+var user = ref("");
 
 onMounted(() => {
-  if (!localStorage.getItem('user')) {
-    console.log('invalid user')
-    router.push('/login')
+  if (!localStorage.getItem("user")) {
+    console.log("invalid user");
+    router.push("/login");
   }
-  username.value = localStorage.getItem('username')
-})
+  username.value = localStorage.getItem("username");
+  user.value = localStorage.getItem("user");
+});
 </script>
 
 <template>
@@ -21,9 +23,9 @@ onMounted(() => {
         <span class="block text-6xl font-bold mb-1">Welcome, </span>
         <div class="text-6xl text-primary font-bold mb-3">{{ username }}</div>
 
-        <!-- 
-        <Button label="Learn More" type="button" class="mr-3 p-button-raised"></Button>
-        <Button label="Live Demo" type="button" class="p-button-outlined"></Button> -->
+        <div v-show="user == 'driver'">
+          <h1>DRIVER</h1>
+        </div>
       </section>
     </div>
     <div class="col-12 md:col-6 overflow-hidden">

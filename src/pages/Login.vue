@@ -22,7 +22,29 @@ function login(user, username, userid) {
   router.push("/");
 }
 
+const availableDrivers = [
+  {
+    id: 1,
+    name: "",
+    licenseType: "",
+    plateNumber: "",
+    vehicleType: "",
+    aboutMe: "",
+  },
+  {
+    id: 2,
+    name: "Juan dela Cruz",
+    licenseType: "Professional",
+    plateNumber: "ABC123",
+    vehicleType: "Jeepney",
+    aboutMe: "I am a driver",
+    available: false,
+  },
+];
+
 onMounted(() => {
+  // localStorage.clear();
+  localStorage.setItem("availableDrivers", JSON.stringify(availableDrivers));
   localStorage.removeItem("username");
   localStorage.removeItem("user");
 });
