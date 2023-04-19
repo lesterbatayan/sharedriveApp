@@ -1,13 +1,15 @@
 <script setup>
-// import InputText from 'primevue/inputtext';
-// import Dropdown from 'primevue/dropdown';
-// import Textarea from 'primevue/textarea';
 import { ref, onMounted } from "vue";
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
 
 onMounted(() => {
   console.log("mounted");
 
-  driversInfo.value = JSON.parse(localStorage.getItem("driversInfo"));
+  driversInfo.value = JSON.parse(localStorage.getItem("availableDrivers")).filter(
+    (driver) => driver.id == 1 
+  )[0];
   if (!driversInfo.value) {
     driversInfo.value = {
       name: "",
@@ -36,6 +38,8 @@ var driversInfo = ref({
 const selectedVehicle = ref("");
 const selectedLicense = ref("");
 
+
+
 const licenseTypes = ref([
   { name: "Professional", id: 1 },
   { name: "Non-Professional", id: 2 },
@@ -53,7 +57,7 @@ const vehicleTypes = ref([
 function saveDetails() {
   driversInfo.value.licenseType = selectedLicense.value.name;
   driversInfo.value.vehicleType = selectedVehicle.value.name;
-  console.log(driversInfo.value);
+
   if (
     driversInfo.value.name &&
     driversInfo.value.licenseType &&
@@ -61,11 +65,19 @@ function saveDetails() {
     driversInfo.value.vehicleType &&
     driversInfo.value.aboutMe
   ) {
-    console.log("saving");
-    localStorage.setItem("driversInfo", JSON.stringify(driversInfo.value));
-    console.log(localStorage.getItem("driversInfo"));
+    const availableDrivers = JSON.parse(localStorage.getItem('availableDrivers')) || [];
+    const driverIndex = availableDrivers.findIndex(driver => driver.id === 1);
+    if (driverIndex !== -1) {
+      availableDrivers[driverIndex] = { ...driversInfo.value, id: 1, available: true };
+      localStorage.setItem('availableDrivers', JSON.stringify(availableDrivers));
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Profile Saved!' });
+    }
   }
+  
 }
+
+
+
 </script>
 
 <template>
@@ -123,6 +135,7 @@ function saveDetails() {
         </div>
       </div>
     </div>
+    <Toast />
   </div>
 </template>
 

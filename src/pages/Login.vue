@@ -22,14 +22,15 @@ function login(user, username, userid) {
   router.push("/");
 }
 
-const availableDrivers = [
+const availableDrivers = ref([
   {
     id: 1,
-    name: "",
+    name: "Driver (profile not set)",
     licenseType: "",
     plateNumber: "",
     vehicleType: "",
     aboutMe: "",
+    available: true
   },
   {
     id: 2,
@@ -38,16 +39,21 @@ const availableDrivers = [
     plateNumber: "ABC123",
     vehicleType: "Jeepney",
     aboutMe: "I am a driver",
-    available: false,
+    available: true,
   },
-];
+]);
 
 onMounted(() => {
-  // localStorage.clear();
-  localStorage.setItem("availableDrivers", JSON.stringify(availableDrivers));
-  localStorage.removeItem("username");
-  localStorage.removeItem("user");
+  const storedAvailableDrivers = JSON.parse(localStorage.getItem('availableDrivers'));
+  if (storedAvailableDrivers) {
+    availableDrivers.value = storedAvailableDrivers;
+  } else {
+    localStorage.setItem('availableDrivers', JSON.stringify(availableDrivers.value));
+  }
+  localStorage.removeItem('username');
+  localStorage.removeItem('user');
 });
+
 </script>
 
 <template>

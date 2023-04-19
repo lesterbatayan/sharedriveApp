@@ -9,6 +9,9 @@ import InputSwitch from 'primevue/inputswitch'
 import Dropdown from 'primevue/dropdown'
 import Dialog from 'primevue/dialog'
 import Textarea from 'primevue/textarea'
+import Toast from 'primevue/toast'
+
+import ToastService from 'primevue/toastservice'
 
 import 'primeflex/primeflex.css'
 
@@ -20,6 +23,7 @@ import '@/assets/app.css'
 
 const app = createApp(App)
 
+app.use(ToastService);
 app.use(PrimeVue, { ripple: true })
 
 app.component('Button', Button)
@@ -29,6 +33,7 @@ app.component('InputSwitch', InputSwitch)
 app.component('Dropdown', Dropdown)
 app.component('Dialog', Dialog)
 app.component('Textarea', Textarea)
+app.component('Toast', Toast)
 
 app.use(createPinia())
 app.use(router)

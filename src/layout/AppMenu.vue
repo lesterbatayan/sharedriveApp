@@ -8,15 +8,16 @@ const drivermenu = [
     items: [
       { label: "Home", icon: "pi pi-home", to: "/" },
       {
-        label: "Set Availability",
-        icon: "pi pi-user-plus",
-        to: "/availability",
-      },
-      {
         label: "Driver Profile",
         icon: "pi pi-id-card",
         to: "/profile",
       },
+      {
+        label: "Set Availability",
+        icon: "pi pi-user-plus",
+        to: "/availability",
+      },
+
       {
         label: "Chat",
         icon: "pi pi-comments",

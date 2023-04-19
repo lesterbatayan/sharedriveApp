@@ -50,17 +50,34 @@ const unbindOutsideClickListener = () => {
     outsideClickListener.value = null
   }
 }
+// const isOutsideClicked = (event) => {
+//   const sidebarEl = document.querySelector('.layout-sidebar')
+//   const topbarEl = document.querySelector('.layout-menu-button')
+
+//   return !(
+//     sidebarEl.isSameNode(event.target) ||
+//     sidebarEl.contains(event.target) ||
+//     topbarEl.isSameNode(event.target) ||
+//     topbarEl.contains(event.target)
+//   )
+// }
+
 const isOutsideClicked = (event) => {
-  const sidebarEl = document.querySelector('.layout-sidebar')
-  const topbarEl = document.querySelector('.layout-menu-button')
+  const sidebarEl = document.querySelector('.layout-sidebar');
+  const topbarEl = document.querySelector('.layout-menu-button');
+
+  if (!sidebarEl || !topbarEl) {
+    return false;
+  }
 
   return !(
     sidebarEl.isSameNode(event.target) ||
     sidebarEl.contains(event.target) ||
     topbarEl.isSameNode(event.target) ||
     topbarEl.contains(event.target)
-  )
-}
+  );
+};
+
 </script>
 
 <template>

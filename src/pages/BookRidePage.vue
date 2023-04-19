@@ -1,6 +1,15 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-// import { Dialog } from 'primevue/dialog';
+import { ref, computed, watch, onMounted } from "vue";
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
+
+onMounted(() => {
+  const availableDrivers = JSON.parse(localStorage.getItem('availableDrivers')) || [];
+  const driversInfo = availableDrivers.filter((driver) => driver.available);
+  drivers.value = driversInfo;
+    console.log('drivers.value', drivers.value);
+})
 
 var mapImageSrc = ref();
 var isLoading = ref(false);
@@ -41,11 +50,14 @@ const locations = ref([
   }, //16.45299021932984, 120.57340212380169
 ]);
 const drivers = ref([
-  { name: "Driver 1", code: "D1" },
-  { name: "Driver 2", code: "D2" },
-  { name: "Driver 3", code: "D3" },
-  { name: "Driver 4", code: "D4" },
+  // { name: "Driver 1", code: "D1" },
+  // { name: "Driver 2", code: "D2" },
+  // { name: "Driver 3", code: "D3" },
+  // { name: "Driver 4", code: "D4" },
 ]);
+
+
+
 
 const maps = [
   { locationID: 1, destinationID: 2, src: "./src/maps/1 - 2.png" },
@@ -76,10 +88,6 @@ function fetchMap() {
   if (selectedLocation.value && selectedDestination.value) {
     let locationID = selectedLocation.value.code;
     let destinationID = selectedDestination.value.code;
-
-    // if (locationID > destinationID) {
-    //   [locationID, destinationID] = [destinationID, locationID];
-    // }
 
     isLoading.value = true;
     mapImageSrc.value = getMap(locationID, destinationID);
@@ -128,6 +136,8 @@ function bookRide() {
     localStorage.setItem("booked", true);
     booked.value = localStorage.getItem("booked");
     bookingDialog.value = true; // Show the dialog when booking is successful
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Booking Saved!' });
+
   }
 }
 
@@ -267,28 +277,11 @@ watch([selectedLocation, selectedDestination], () => {
           ></iframe>
         </div>
       </div>
+      <Toast />
     </div>
   </div>
 
-  <!-- <Dialog v-model="bookingDialog" header="Booking Details">
-                    <div v-if="booked" class="booking-details">
-                      <p class="text-primary font-bold">You are now booked!</p>
-                      <p>Booking Details:</p>
-                      <p>
-                        Your current location: <span class="font-bold text-primary">{{ location }}</span>
-                      </p>
-                      <p>
-                        Your chosen destination:
-                        <span class="font-bold text-primary">{{ destination }}</span>
-                      </p>
-                      <p>
-                        Your chosen vehicle: <span class="font-bold text-primary">{{ vehicle }}</span>
-                      </p>
-                      <p>
-                        Your current driver: <span class="font-bold text-primary">{{ driver }}</span>
-                      </p>
-                    </div>
-                  </Dialog> -->
+  
 </template>
 
 <style lang="scss" scoped>
