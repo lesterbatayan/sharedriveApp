@@ -1,6 +1,13 @@
-# sefinalprj
 
-This template should help get you started developing with Vue 3 in Vite.
+# **SHAREDRIVE** - A local ride-hailing app for Baguio and La Trinidad
+
+A project in partial fulfillment of the requirements for the course **MSCS RC05 - Software Engineering**
+
+- Malabanan, Don Harl
+- Cael, Percival
+- Batay-an, Lester Warren
+
+# 
 
 ## Recommended IDE Setup
 
