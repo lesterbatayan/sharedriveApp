@@ -1,6 +1,6 @@
-
 # **SHAREDRIVE** - A local ride-hailing app for Baguio and La Trinidad
-## [Click here to visit the app](https://sharedrive.netlify.app/)
+
+## <a href="https://sharedrive.netlify.app/" target="_blank">Click here to visit the app</a>
 
 A project in partial fulfillment of the requirements for the course **MSCS RC05 - Software Engineering**
 
@@ -8,9 +8,9 @@ A project in partial fulfillment of the requirements for the course **MSCS RC05 
 - Cael, Percival
 - Batay-an, Lester Warren
 
-# 
+#
 
-----
+---
 
 ## Project Setup
 

@@ -1,14 +1,14 @@
 <script setup>
 // import { useLayout } from "@/layout/composables/layout";
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 // import AppConfig from '@/layout/AppConfig.vue';
 
 // const { layoutConfig, contextPath } = useLayout();
 // const email = ref("");
 // const password = ref("");
 // const checked = ref(false);
-const router = useRouter();
+const router = useRouter()
 
 // const logoUrl = computed(() => {
 //   return `${contextPath}layout/images/${
@@ -16,44 +16,43 @@ const router = useRouter();
 //   }.svg`;
 // });
 function login(user, username, userid) {
-  localStorage.setItem("user", user);
-  localStorage.setItem("username", username);
-  localStorage.setItem("userid", userid);
-  router.push("/");
+  localStorage.setItem('user', user)
+  localStorage.setItem('username', username)
+  localStorage.setItem('userid', userid)
+  router.push('/')
 }
 
 const availableDrivers = ref([
   {
     id: 1,
-    name: "Driver (profile not set)",
-    licenseType: "",
-    plateNumber: "",
-    vehicleType: "",
-    aboutMe: "",
+    name: 'Driver (profile not set)',
+    licenseType: '',
+    plateNumber: '',
+    vehicleType: '',
+    aboutMe: '',
     available: true
   },
   {
     id: 2,
-    name: "Juan dela Cruz",
-    licenseType: "Professional",
-    plateNumber: "ABC123",
-    vehicleType: "Jeepney",
-    aboutMe: "I am a driver",
-    available: true,
-  },
-]);
+    name: 'Juan dela Cruz',
+    licenseType: 'Professional',
+    plateNumber: 'ABC123',
+    vehicleType: 'Jeepney',
+    aboutMe: 'I am a driver',
+    available: true
+  }
+])
 
 onMounted(() => {
-  const storedAvailableDrivers = JSON.parse(localStorage.getItem('availableDrivers'));
+  const storedAvailableDrivers = JSON.parse(localStorage.getItem('availableDrivers'))
   if (storedAvailableDrivers) {
-    availableDrivers.value = storedAvailableDrivers;
+    availableDrivers.value = storedAvailableDrivers
   } else {
-    localStorage.setItem('availableDrivers', JSON.stringify(availableDrivers.value));
+    localStorage.setItem('availableDrivers', JSON.stringify(availableDrivers.value))
   }
-  localStorage.removeItem('username');
-  localStorage.removeItem('user');
-});
-
+  localStorage.removeItem('username')
+  localStorage.removeItem('user')
+})
 </script>
 
 <template>
@@ -66,11 +65,7 @@ onMounted(() => {
         style="
           border-radius: 56px;
           padding: 0.3rem;
-          background: linear-gradient(
-            180deg,
-            var(--primary-color) 10%,
-            rgba(33, 150, 243, 0) 30%
-          );
+          background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
         "
       >
         <!-- rgba(33, 150, 243, 0) 30% -->
@@ -101,6 +96,19 @@ onMounted(() => {
               raised
             ></Button>
           </div>
+          <!-- <div class="flex justify-content-end align-items-end" style="height: 100px">
+            <Button
+              label="Reset values"
+              class="w-auto p-3 text-sm m-1"
+              severity="warning"
+              @click="reset()"
+              rounded
+              text
+              size="small"
+              icon="pi pi-times"
+              style="height: 20px"
+            ></Button>
+          </div> -->
         </div>
       </div>
     </div>
@@ -108,14 +116,4 @@ onMounted(() => {
   <!-- <AppConfig simple /> -->
 </template>
 
-<style scoped>
-.pi-eye {
-  transform: scale(1.6);
-  margin-right: 1rem;
-}
-
-.pi-eye-slash {
-  transform: scale(1.6);
-  margin-right: 1rem;
-}
-</style>
+<style scoped></style>
